@@ -20,5 +20,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('joinme.urls')),
-    path('joinme/', include('joinme.urls')),  # ojo aquí: el prefijo es 'joinme/'
+    path('joinme/', include('joinme.urls')),  
+    
 ]
+

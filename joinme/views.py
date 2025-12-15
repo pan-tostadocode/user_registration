@@ -105,33 +105,29 @@ def login(request):
 @csrf_exempt
 def logout(request):
     if request.method != "POST":
-        return JsonResponse({"error": "Método no permitido"}, status=400)
+        return JsonResponse({"error": "Método no permitido"}, status=405)
 
+    # Verificar si hay usuario logueado
+    user_id = request.session.get('_auth_user_id')
+    if not user_id:
+        return JsonResponse({"error": "No hay sesión activa"}, status=400)
+
+    # Eliminar sesiones activas del usuario
+    sessions = Session.objects.filter(expire_date__gte=timezone.now())
+    for s in sessions:
+        data_session = s.get_decoded()
+        if data_session.get('_auth_user_id') == str(user_id):
+            s.delete()
+
+    # Limpiar session_key en User (si existe)
     try:
-        user_id = request.session.get('_auth_user_id')
+        user = User.objects.get(id=user_id)
+        user.session_key = None  # type: ignore
+        user.save()
+    except User.DoesNotExist:
+        pass
 
-        if user_id:
-            # eliminar sesiones activas
-            sessions = Session.objects.filter(expire_date__gte=timezone.now())
-            for s in sessions:
-                data_session = s.get_decoded()
-                if data_session.get('_auth_user_id') == str(user_id):
-                    s.delete()
+    # Eliminar sesión actual
+    request.session.flush()  # elimina todas las variables de sesión y cookie
 
-            # limpiar session_key en User
-            try:
-                user = User.objects.get(id=user_id)
-                user.session_key = None  # type: ignore
-                user.save()
-            except User.DoesNotExist:
-                pass
-
-            # eliminar sesión en request
-            if '_auth_user_id' in request.session:
-                del request.session['_auth_user_id']
-
-        # siempre devolver JSON
-        return JsonResponse({"message": "Cierre de sesión exitoso"})
-
-    except Exception as e:
-        return JsonResponse({"error": "Error al cerrar sesión"}, status=400)
+    return JsonResponse({"message": "Cierre de sesión exitoso"})

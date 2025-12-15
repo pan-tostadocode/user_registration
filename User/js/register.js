@@ -5,8 +5,7 @@ const user_register = document.getElementById("user_register");
 const loginForm = document.getElementById("loginForm");
 const btnRegister = document.getElementById("showRegister");
 const btnLogin = document.getElementById("showLogin");
-const btnLogout = document.getElementById("showLogout");
-
+const btnLogout = document.getElementById("btnLogout");
 // Mostrar/ocultar formularios
 btnRegister.addEventListener("click", () => {
   user_register.style.display = "block";
@@ -90,32 +89,35 @@ loginForm.addEventListener("submit", async (e) => {
 // Botón logout
 btnLogout.addEventListener("click", async () => {
   try {
+    console.log("Haciendo logout...");
+
     const res = await fetch("http://127.0.0.1:8000/logout/", {
       method: "POST",
-      credentials: "include"
+      credentials: "include" // envía cookies de sesión
     });
 
-    const contentType = res.headers.get("content-type");
+    // Siempre intentar leer JSON, pero manejar error si llega HTML
     let data;
-
-    if (contentType && contentType.includes("application/json")) {
+    try {
       data = await res.json();
-    } else {
-      console.error("Respuesta inesperada del servidor:", await res.text());
-      alert("Respuesta inesperada del servidor");
+    } catch (err) {
+      const text = await res.text();
+      console.error("Respuesta inesperada del servidor:", text);
       return;
     }
 
+    console.log("Respuesta del servidor:", data);
+
     if (res.ok) {
-      alert(data.message);
-      window.location.href = "index.html";
+      alert(data.message || "Logout exitoso");
+      // Redirigir o actualizar página
+      window.location.href = "Index.html";
     } else {
-      alert(data.error || "Error inesperado");
+      alert(data.error || "Error al cerrar sesión");
     }
 
   } catch (err) {
-    alert("Error de conexión");
-    console.error(err);
+    console.error("Error en fetch:", err);
+    alert("Error en la solicitud de logout");
   }
 });
-
