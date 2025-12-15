@@ -4,6 +4,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.contrib.sessions.models import Session
 import json
+from django.contrib.auth.hashers import make_password
 
 
 from joinme.models import User
@@ -25,11 +26,12 @@ def register(request):
         if len(full_name) < 5:
             return JsonResponse({"error": "Full name too short"}, status=400)
 
-        user = User.objects.create_user( # type: ignore
+        user = User.objects.create(
             email=email,
-            password=password,
-            full_name=full_name
-        )
+            full_name=full_name,
+            password=make_password(password) # type: ignore CONTRASEÑA CIFRADA 
+            )
+
 
         return JsonResponse({"message": "Successful registration"})
 

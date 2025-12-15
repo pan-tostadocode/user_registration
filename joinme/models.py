@@ -4,7 +4,7 @@ from django.db import models
 
 from django.contrib.auth.hashers import make_password, check_password
 
-class User(models.Model):
+class User(models.Model): 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=100)
@@ -21,4 +21,5 @@ class User(models.Model):
 
     def __str__(self):
         return self.email
+
 
