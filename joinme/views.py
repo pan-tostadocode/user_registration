@@ -7,6 +7,10 @@ import json
 from django.contrib.auth.hashers import make_password
 
 
+MAX_FAILED_ATTEMPTS = 3
+BLOCK_TIME = timedelta(hours=2)
+SESSION_TIMEOUT = 900  # 15 minutos en segundos
+
 from joinme.models import User
 
 @csrf_exempt
@@ -29,16 +33,13 @@ def register(request):
         user = User.objects.create(
             email=email,
             full_name=full_name,
-            password=make_password(password) # type: ignore CONTRASEÑA CIFRADA 
+            password=make_password(password) # type: ignore CONTRASEÑA 
             )
 
 
         return JsonResponse({"message": "Successful registration"})
 
 
-MAX_FAILED_ATTEMPTS = 3
-BLOCK_TIME = timedelta(hours=2)
-SESSION_TIMEOUT = 900  # 15 minutos en segundos
 
 @csrf_exempt # type: ignore
 def login(request):
@@ -90,3 +91,26 @@ def login(request):
             user.save()
             return JsonResponse({"error": "Invalid credentials"}, status=400)
 
+@csrf_exempt
+def logout(request):
+    user_id = request.session.get('_auth_user_id')
+    if user_id:
+        # Eliminar la sesión activa
+        sessions = Session.objects.filter(expire_date__gte=timezone.now())
+        for s in sessions:
+            data_session = s.get_decoded()
+            if data_session.get('_auth_user_id') == str(user_id):
+                s.delete()
+
+        # Limpiar session_key en el modelo User
+        try:
+            user = User.objects.get(id=user_id)
+            user.session_key = None # type: ignore
+            user.save()
+        except User.DoesNotExist:
+            pass
+
+        # Eliminar sesión en request
+        del request.session['_auth_user_id']
+
+    return JsonResponse({"message": "Successfully logged out"})

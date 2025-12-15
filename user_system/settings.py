@@ -75,8 +75,12 @@ WSGI_APPLICATION = 'user_system.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'user_registration_db',   # tu base de datos creada en PostgreSQL
+        'USER': 'admin_pan',               # el usuario que creaste
+        'PASSWORD': 'to$t4pan*',        # la contraseña que le pusiste
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -116,3 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# Tiempo de inactividad para cerrar sesión (en segundos)
+SESSION_COOKIE_AGE = 900  # 15 minutos
+SESSION_SAVE_EVERY_REQUEST = True  # Reinicia el contador de 15 min en cada request
