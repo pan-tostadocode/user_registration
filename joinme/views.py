@@ -5,6 +5,7 @@ from datetime import timedelta
 from django.contrib.sessions.models import Session
 import json
 from django.contrib.auth.hashers import make_password
+from .models import User
 
 
 MAX_FAILED_ATTEMPTS = 3
@@ -16,7 +17,14 @@ from joinme.models import User
 @csrf_exempt
 def register(request):
     if request.method == "POST":
-        data = json.loads(request.body)
+
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse(
+                {"error": "Invalid JSON"},
+                status=400
+            )
         email = data.get("email")
         password = data.get("password")
         full_name = data.get("full_name")
@@ -39,6 +47,7 @@ def register(request):
 
         return JsonResponse({"message": "Successful registration"})
 
+    return JsonResponse({"error": "Method not allowed"}, status=405)
 
 
 @csrf_exempt # type: ignore
@@ -91,26 +100,38 @@ def login(request):
             user.save()
             return JsonResponse({"error": "Invalid credentials"}, status=400)
 
+
+
 @csrf_exempt
 def logout(request):
-    user_id = request.session.get('_auth_user_id')
-    if user_id:
-        # Eliminar la sesión activa
-        sessions = Session.objects.filter(expire_date__gte=timezone.now())
-        for s in sessions:
-            data_session = s.get_decoded()
-            if data_session.get('_auth_user_id') == str(user_id):
-                s.delete()
+    if request.method != "POST":
+        return JsonResponse({"error": "Método no permitido"}, status=400)
 
-        # Limpiar session_key en el modelo User
-        try:
-            user = User.objects.get(id=user_id)
-            user.session_key = None # type: ignore
-            user.save()
-        except User.DoesNotExist:
-            pass
+    try:
+        user_id = request.session.get('_auth_user_id')
 
-        # Eliminar sesión en request
-        del request.session['_auth_user_id']
+        if user_id:
+            # eliminar sesiones activas
+            sessions = Session.objects.filter(expire_date__gte=timezone.now())
+            for s in sessions:
+                data_session = s.get_decoded()
+                if data_session.get('_auth_user_id') == str(user_id):
+                    s.delete()
 
-    return JsonResponse({"message": "Successfully logged out"})
+            # limpiar session_key en User
+            try:
+                user = User.objects.get(id=user_id)
+                user.session_key = None  # type: ignore
+                user.save()
+            except User.DoesNotExist:
+                pass
+
+            # eliminar sesión en request
+            if '_auth_user_id' in request.session:
+                del request.session['_auth_user_id']
+
+        # siempre devolver JSON
+        return JsonResponse({"message": "Cierre de sesión exitoso"})
+
+    except Exception as e:
+        return JsonResponse({"error": "Error al cerrar sesión"}, status=400)

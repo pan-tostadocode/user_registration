@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'joinme',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -48,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'user_system.urls'
@@ -76,10 +79,9 @@ WSGI_APPLICATION = 'user_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'user_registration_db',   # tu base de datos creada en PostgreSQL
-        'USER': 'admin_pan',               # el usuario que creaste
-        'PASSWORD': 'to$t4pan*',        # la contraseña que le pusiste
-        'HOST': 'localhost',
+        'NAME': 'user_registration_db',   
+        'USER': 'admin_pan',               
+        'PASSWORD': 'to$t4pan*',        
         'PORT': '5432',
     }
 }
@@ -124,3 +126,11 @@ STATIC_URL = 'static/'
 # Tiempo de inactividad para cerrar sesión (en segundos)
 SESSION_COOKIE_AGE = 900  # 15 minutos
 SESSION_SAVE_EVERY_REQUEST = True  # Reinicia el contador de 15 min en cada request
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+]
+CORS_ALLOW_CREDENTIALS = True
+

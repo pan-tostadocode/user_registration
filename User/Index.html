@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JoinMe - Login-Register</title>
+    <link rel="stylesheet" href="Style.css">
+    <link rel="icon" href="download (7).jpg" />
+</head>
+<body>
+
+    <header>
+        <h1>JoinMe</h1>
+        <h2>Create Free Account</h3>
+    </header>
+
+
+    <!-- Botones para cambiar de formulario -->
+    <button id="showRegister">Register</button>
+    <button id="showLogin">Login</button>
+    <button id="showLogout" style="display:none">Logout</button>
+
+    <h3>Personal Info</h3>
+    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequatur, architecto molestiae? Vel mollitia quod excepturi autem officiis magnam optio deserunt fuga! A enim ducimus dolores. Fugiat eaque veniam consequatur distinctio?</p>
+    
+    <!-- Formulario Register -->
+    <form id="user_register">
+             <input type="text" name="full_name" placeholder="Pamela Torres" required />
+             <input type="email" name="email" placeholder="email12@gmail.com" required />
+             <input type="password" name="password" placeholder="abc12345" required />
+             <button type="submit">Registrarse</button>
+    </form>
+
+    <!-- Formulario Login -->
+    <form id="loginForm" style="display:none">
+        <h2>Login</h2>
+        <input type="email" name="email" placeholder="Correo" required /><br>
+        <input type="password" name="password" placeholder="Contraseña" required /><br>
+        <button type="submit">Ingresar</button>
+    </form>
+
+    <div id="message"></div>
+    <script src="js/register.js"></script>
+</body>
+</html>
