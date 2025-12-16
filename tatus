@@ -1,0 +1,9 @@
+[33m2e6cbc2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m feat: stable version with full reviews and testing
+[33mbec13c5[m feat: stable version with full reviews and testing
+[33m00236cb[m feat: logout displays message and redirects to main index
+[33m9db9985[m feat: login, register y logout funcionales (errores CORS/fetch pendientes)
+[33m7446969[m feat: full backend with registration, login and logout
+[33m97b1721[m feat: add password hashing, user registration and login functionality
+[33m2449a2e[m feat: user registration and login backend working
+[33mb6c59dc[m chore: initial project setup
+[33m45b28e4[m Initial commit

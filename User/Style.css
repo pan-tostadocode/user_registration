@@ -1,0 +1,132 @@
+/*importar fuente degular*/
+@font-face {
+    font-family: 'degular1';
+    src: url(Degular/DegularDisplay-BoldItalic.otf);
+}
+
+@font-face {
+    font-family:'degular2' ;
+    src: url(Degular/DegularDisplay-SemiboldItalic.otf);
+}
+
+@font-face {
+    font-family: 'degular3';
+    src: url(Degular/DegularDisplay-RegularItalic.otf);
+}
+
+@font-face {
+    font-family: 'degular4';
+    src: url(Degular/DegularDisplay-ThinItalic.otf);
+}
+
+
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+h1{
+    font-family: 'degular1';
+    font-size: 20vh;
+}
+
+h2{
+    font-family: 'degular2';
+    font-size: 6vh;
+}
+
+h3{
+    font-family: 'degular3';
+    font-size: 2.5vh;
+    margin: 2vh 7vh;
+}
+
+p{
+    font-family: 'degular4';
+    font-size: 2.5vh;
+    margin: 2vh 7vh;
+}
+
+body {
+    min-height: 100vh;
+    background-image: url('jpg.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+}
+
+
+.cuadrito {
+    background-color: rgb(253, 249, 236);
+    display: block;
+    text-align: center;
+    margin: 10vh;
+    padding-bottom: 6vh;
+    border-radius: 10%;
+}
+
+#user_register{
+    font-family: 'degular3';
+    font-size: 2.5vh;
+}
+
+#loginForm{
+   font-family: 'degular3';
+   font-size: 2.5vh; 
+}
+
+#showRegister{
+    font-family: 'degular2';
+    background-color: #fcedc7;
+    border-radius: 46%;
+    padding: 1vh;
+}
+
+
+#showLogin{
+    font-family: 'degular2';
+    background-color: #fcedc7;
+    border-radius: 46%;
+    padding: 1vh;
+}
+
+#btnLogout{
+    font-family: 'degular2';
+    background-color: #fcedc7;
+    border-radius: 46%;
+    padding: 1vh;
+}
+
+#btn1{
+    font-family: 'degular2';
+    background-color: #fcedc7;
+    border-radius: 46%;
+    padding: 1vh;
+}
+
+#btn2{
+    font-family: 'degular2';
+    background-color: #fcedc7;
+    border-radius: 46%;
+    padding: 1vh;
+}
+
+#showRegister:hover{
+    background-color: #f7f0e0;
+}
+
+#showLogin:hover{
+    background-color: #f7f0e0;
+}
+
+#btnLogout:hover{
+    background-color: #f7f0e0;
+}
+
+#btn1:hover{
+    background-color: #f7f0e0;
+}
+
+#btn2:hover{
+    background-color: #f7f0e0;
+}
